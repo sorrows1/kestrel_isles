@@ -1,0 +1,17 @@
+regions 3
+0 1 2
+3 4
+5
+hops 0 2 1
+hops 0 4 unreachable
+maintain 9 3
+3 4 2
+1 2 3
+0 1 4
+fastest 0 2 6 0 2
+fastest 0 5 unreachable
+stamina 0 3 4 0 1 2 3
+unlock 3 8 0 2 3
+most 2 0 3
+best 11 0 2
+stamina 0 3 exploit 2 3 1 2

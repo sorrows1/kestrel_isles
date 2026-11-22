@@ -1,0 +1,14 @@
+# Build output
+isles
+isles_debug
+isles.exe
+isles_debug.exe
+isles_debug.dSYM/
+build/
+
+# Temporary files of Microsoft Word
+~$*
+
+# Operating-system files
+.DS_Store
+Thumbs.db

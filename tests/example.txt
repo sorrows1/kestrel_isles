@@ -1,0 +1,12 @@
+# tests/example.txt
+# An example of a team test: quests 1 and 2 are prerequisites of each other.
+# unlock must report a cycle even for quest 0, which does not lie on it. Add
+# your own tests to this directory.
+N 1 3
+Q 0 5
+Q 1 2
+Q 2 7
+P 0 2
+P 1 2
+P 2 1
+unlock 0

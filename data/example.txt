@@ -1,0 +1,39 @@
+# data/example.txt
+# A small world with six islands and four quests. The expected output of
+# ./isles with this file is in example.expected. Some lines of that output,
+# such as paths, bridge lists, and cycles, show one valid answer each; yours
+# may differ (see the assignment brief).
+N 6 4
+B 0 1 4
+B 1 2 3
+B 0 2 6
+B 3 4 2
+R 0 1 5
+R 1 2 -2
+R 0 2 4
+R 2 3 1
+Q 0 3
+Q 1 2
+Q 2 4
+Q 3 1
+P 0 2
+P 1 2
+P 2 3
+E 0 4 5
+E 3 6 4
+E 5 9 6
+E 4 7 3
+regions
+hops 0 2
+hops 0 4
+maintain kruskal
+fastest 0 2
+fastest 0 5
+stamina 0 3
+unlock 3
+most
+best
+# A route back from island 3 to island 1 closes the loop 1 -> 2 -> 3 -> 1,
+# whose stamina costs sum to -2: a player could sail it forever.
+R 3 1 -1
+stamina 0 3
