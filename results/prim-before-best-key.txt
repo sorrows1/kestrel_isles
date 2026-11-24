@@ -11,3 +11,6 @@ maintain 0 3
 0 1 0
 1 2 0
 2 3 0
+All-isolated forest
+maintain 0 0
+maintain 0 0

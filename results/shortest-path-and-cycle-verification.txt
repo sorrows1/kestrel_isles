@@ -4,7 +4,19 @@ stamina 0 5 exploit 1 2 1
 stamina 0 5 exploit 4 3 4
 Parentless read-only probe from 1 to 0, labels [0, -2, -3]
 stamina 0 2 exploit 2 1 2
+First final update reaches a sink, labels [0, -6, -7, -5], edge (2, 3, 0)
+stamina 0 3 exploit 2 1 2
+First final update before a two-edge predecessor tail, labels [0, -8, -9, -7, -5], edge (3, 4, 0)
+stamina 0 4 exploit 2 1 2
 Unreachable negative cycle stays invisible
 stamina 0 1 4 0 1
 stamina 0 3 unreachable
+Reachable directed cycle of zero total
+stamina 0 1 -1 0 1
+64-bit path and an unreachable tail with a negative outgoing route
+stamina 0 3 3000000000 0 1 2 3
+stamina 0 5 unreachable
+Contract excludes self routes and repeated directed arcs
+Cannot parse line: R 0 0 -1
+Cannot parse line: R 0 1 -1
 Heap trace, target labels [2, 1, 0]; actual expansions [2, 0]

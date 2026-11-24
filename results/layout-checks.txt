@@ -1,1 +1,2 @@
 Verified ordered packed records and original edge indices on three small inputs.
+Rejected a wrong edge index that left every region label unchanged.

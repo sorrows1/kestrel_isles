@@ -1,4 +1,22 @@
 Map adjacency and queries
+Weights, sea routes, and world reset
+regions 4
+0 1 2
+3
+4
+5
+hops 0 1 1
+fastest 0 1 2 0 2 1
+hops 1 4 unreachable
+hops 5 5 0
+regions 3
+0
+1
+2 3
+hops 0 1 unreachable
+Invalid inputs rejected by the driver
+Cannot parse line: B 1 0 4
+Cannot parse line: B 1 1 0
 Empty bridge graph and source-to-self
 regions 4
 0
