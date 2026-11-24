@@ -21,8 +21,7 @@
 namespace {
 using Edges = std::vector<Edge>;
 using Nested = std::vector<std::vector<Neighbor>>;
-std::ofstream timings("results/layout_epochs.csv");
-std::ofstream heaps("results/prim_operations.csv");
+std::ofstream timings, heaps;
 
 void check(bool condition) {
   if (!condition)
@@ -46,6 +45,12 @@ void measure(std::string_view graph, unsigned seed, std::string_view variant,
 Edges make_edges(std::string_view graph, int n, unsigned seed) {
   Edges edges;
   std::mt19937 rng(seed);
+  if (graph == "star-isolates") {
+    for (int v = 1; v < n; ++v)
+      if (v % 8 != 0)
+        edges.push_back({0, v, 1 + static_cast<int>(rng() % 1000)});
+    return edges;
+  }
   for (int v = 1; v < n; ++v) {
     edges.push_back({v - 1, v, 1 + static_cast<int>(rng() % 1000)});
   }
@@ -118,18 +123,22 @@ struct HeapCounts {
   std::size_t pushes = 0, stale = 0, peak = 0, scans = 0, comparisons = 0;
 };
 
-void check_packed_records(int n, const Edges& edges, bool undirected) {
+bool matching_records(int n, const Edges& edges, bool undirected,
+                      const PackedLists<Neighbor>& packed) {
   const auto ordinary = adjacency(n, edges, undirected);
-  const auto packed = packed_adjacency(n, edges, undirected);
-  check(packed.offset.size() == static_cast<std::size_t>(n) + 1);
-  check(packed.offset.front() == 0 && packed.offset.back() == packed.items.size());
-  check(packed.items.size() == (undirected ? 2 : 1) * edges.size());
+  if (packed.offset.size() != static_cast<std::size_t>(n) + 1 || packed.offset.front() != 0 ||
+      packed.offset.back() != packed.items.size() ||
+      !std::is_sorted(packed.offset.begin(), packed.offset.end()) ||
+      packed.items.size() != (undirected ? 2 : 1) * edges.size())
+    return false;
   for (int v = 0; v < n; ++v) {
     const auto row = packed[v];
-    check(std::equal(
-        row.begin(), row.end(), ordinary[v].begin(), ordinary[v].end(),
-        [](Neighbor a, Neighbor b) { return a.vertex == b.vertex && a.edge == b.edge; }));
+    if (!std::equal(
+            row.begin(), row.end(), ordinary[v].begin(), ordinary[v].end(),
+            [](Neighbor a, Neighbor b) { return a.vertex == b.vertex && a.edge == b.edge; }))
+      return false;
   }
+  return true;
 }
 
 template <bool BestKey, bool Count>
@@ -219,21 +228,57 @@ QuestSchedule nested_quests(const std::vector<std::int64_t>& duration,
 }
 }
 
-int main() {
+void report_storage() {
+  const int n = 200000;
+  std::cout << "graph,plain_reserved_bytes,degree_reserved_bytes,packed_reserved_bytes\n";
+  for (auto graph : {"chain", "star-isolates"}) {
+    const auto edges = make_edges(graph, n, 2183);
+    auto nested_bytes = [](const Nested& lists) {
+      auto total = lists.capacity() * sizeof(Nested::value_type);
+      for (const auto& line : lists)
+        total += line.capacity() * sizeof(Neighbor);
+      return total;
+    };
+    const auto packed = packed_adjacency(n, edges, true);
+    const auto bytes =
+        packed.offset.capacity() * sizeof(std::size_t) + packed.items.capacity() * sizeof(Neighbor);
+    std::cout << graph << ',' << nested_bytes(adjacency(n, edges, true)) << ','
+              << nested_bytes(nested_graph(n, edges, true)) << ',' << bytes << '\n';
+  }
+}
+
+int main(int argc, char** argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--storage") {
+    report_storage();
+    return 0;
+  }
+  timings.open("results/layout_epochs.csv");
+  heaps.open("results/prim_operations.csv");
   if (!timings || !heaps)
     throw std::runtime_error("run from project root with results/");
-  check_packed_records(6, {{0, 2, 9}, {1, 2, 0}, {2, 4, 3}}, true);
-  check_packed_records(6, {{0, 2, 9}, {1, 2, 0}, {2, 4, 3}}, false);
-  check_packed_records(4, {}, true);
+  const Edges sample{{0, 2, 9}, {1, 2, 0}, {2, 4, 3}};
+  auto records = packed_adjacency(6, sample, true);
+  check(matching_records(6, sample, true, records));
+  check(matching_records(6, sample, false, packed_adjacency(6, sample, false)));
+  check(matching_records(4, {}, true, packed_adjacency(4, {}, true)));
+  auto original_labels = labels(6, records);
+  records.items[0].edge = 1;
+  check(labels(6, records) == original_labels);
+  check(!matching_records(6, sample, true, records));
   std::cout << "Verified ordered packed records and original edge indices on three small inputs.\n";
+  std::cout << "Rejected a wrong edge index that left every region label unchanged.\n";
   timings << "graph,seed,variant,phase,epoch,ms\n";
   heaps << "graph,seed,variant,pushes,stale_pops,peak_entries,edge_scans,heap_comparisons\n";
 
-  for (const auto& [graph, n] :
-       std::vector<std::pair<std::string, int>>{{"chain", 200000}, {"dense", 1024}}) {
+  for (const auto& [graph, n] : std::vector<std::pair<std::string, int>>{
+           {"chain", 200000}, {"dense", 1024}, {"star-isolates", 200000}}) {
     for (unsigned seed : {2183, 6211, 9011}) {
       const auto edges = make_edges(graph, n, seed);
       const auto expected = region_labels(n, edges);
+      if (graph == "star-isolates") {
+        for (int v = 1; v < n; ++v)
+          check(expected[v] == (v % 8 == 0 ? v : 0));
+      }
       const auto plain = [&] {
         layout(graph, seed, "plain", n, [&] { return nested_graph(n, edges, false); }, expected);
       };
@@ -250,6 +295,8 @@ int main() {
         plain();
       else
         packed();
+      if (graph == "star-isolates")
+        continue;
       const auto adj = packed_adjacency(n, edges, true);
       const auto optimum = kruskal(n, edges).total_length;
       auto [all_total, all] = prim_trial<false, true>(n, adj, edges);
