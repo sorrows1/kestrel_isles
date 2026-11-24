@@ -1,0 +1,74 @@
+make: Nothing to be done for 'debug'.
+Passed 14 command files and 200 random worlds, with independent witness checks.
+Map adjacency and queries
+Empty bridge graph and source-to-self
+regions 4
+0
+1
+2
+3
+hops 1 1 0
+hops 1 2 unreachable
+Bridge insertions
+regions 4
+0 1
+2
+3 4
+5
+hops 0 4 unreachable
+regions 3
+0 1 3 4
+2
+5
+hops 0 4 3
+regions 2
+0 1 3 4 5
+2
+hops 0 5 4
+Minimum spanning forests
+Actual forest witnesses
+regions 2
+0 1 2 3
+4
+maintain 0 3
+0 1 0
+0 2 0
+2 3 0
+maintain 0 3
+0 1 0
+1 2 0
+2 3 0
+Rejected wrong weight
+Rejected nonexistent bridge
+Rejected reordered regions
+Rejected merged regions
+Rejected same-count cycle
+Accepted a distinct optimum witness 0-2, 1-2, 2-3
+Shortest paths and negative cycles
+Reachable directed cycles under two input orders
+stamina 0 5 exploit 1 2 1
+stamina 0 5 exploit 4 3 4
+Parentless read-only probe from 1 to 0, labels [0, -2, -3]
+stamina 0 2 exploit 2 1 2
+Unreachable negative cycle stays invisible
+stamina 0 1 4 0 1
+stamina 0 3 unreachable
+Heap trace, target labels [2, 1, 0]; actual expansions [2, 0]
+Quest and event scheduling
+All-zero diamond and zero prefix
+unlock 3 0 0 1 3
+unlock 1 0 0 1
+unlock 2 6 0 1 2
+Disconnected cycle and positive chain
+unlock 2 9 0 1 2
+unlock 2 cycle
+Equal source alternatives, program: unlock 3 0 0 2 3
+Independent checker accepted alternate: unlock 3 0 1 2 3
+Later larger candidate
+unlock 2 5 1 2
+unlock 3 9 1 2 3
+Quest dependencies inserted between queries
+unlock 2 6 0 2
+unlock 2 7 1 2
+One negative edge: Dijkstra and Bellman-Ford both gave 0,1,4,2.
+24,576 graph/source/order cases passed. The hand case gives 1 -> 2 -> 1 (weight -2).

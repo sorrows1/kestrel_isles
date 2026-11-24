@@ -1,0 +1,174 @@
+{
+  "mira": {
+    "branch": "team-study/mira-map",
+    "draft_commit": "119a7a8f067618437b7495b9daa3e180e2b767f6",
+    "frozen_at": "2026-11-24T16:27:35+08:00",
+    "log": "2026-11-24_chatgpt_team-mira.md",
+    "link": "https://chatgpt.com/share/6b054d72-8af4-83ec-9ac9-2a88675ed18a",
+    "turns": [
+      {
+        "prompt": 8,
+        "response": 14,
+        "end": 14,
+        "asked_at": "2026-11-24T16:28:30+08:00"
+      },
+      {
+        "prompt": 18,
+        "response": 24,
+        "end": 26,
+        "asked_at": "2026-11-24T16:31:03+08:00"
+      },
+      {
+        "prompt": 30,
+        "response": 36,
+        "end": 38,
+        "asked_at": "2026-11-24T16:32:38+08:00"
+      },
+      {
+        "prompt": 42,
+        "response": 48,
+        "end": 50,
+        "asked_at": "2026-11-24T16:37:16+08:00"
+      },
+      {
+        "prompt": 54,
+        "response": 60,
+        "end": 66,
+        "asked_at": "2026-11-24T16:39:25+08:00"
+      }
+    ],
+    "shared_at": "2026-11-24T16:40:23+08:00",
+    "verified_at": "2026-11-24T16:42:18+08:00",
+    "decision": "2f0d03613a45e284f5ac39ff0f008b49a67edd4a",
+    "evidence": "c7386bb7632e99ce4684ad95bd38fe0e9b6e47c5"
+  },
+  "jonah": {
+    "branch": "team-study/jonah-forests",
+    "draft_commit": "37c7ed3b559920bd1b79000d9de8c5db53bf1b54",
+    "frozen_at": "2026-11-24T16:27:35+08:00",
+    "log": "2026-11-24_chatgpt_team-jonah.md",
+    "link": "https://chatgpt.com/share/6b054d77-a6f8-83ec-94c0-e039b690ad5c",
+    "turns": [
+      {
+        "prompt": 8,
+        "response": 14,
+        "end": 18,
+        "asked_at": "2026-11-24T16:28:32+08:00"
+      },
+      {
+        "prompt": 22,
+        "response": 28,
+        "end": 38,
+        "asked_at": "2026-11-24T16:31:04+08:00"
+      },
+      {
+        "prompt": 42,
+        "response": 48,
+        "end": 59,
+        "asked_at": "2026-11-24T16:32:39+08:00"
+      },
+      {
+        "prompt": 63,
+        "response": 69,
+        "end": 73,
+        "asked_at": "2026-11-24T16:37:17+08:00"
+      },
+      {
+        "prompt": 77,
+        "response": 83,
+        "end": 92,
+        "asked_at": "2026-11-24T16:39:26+08:00"
+      }
+    ],
+    "shared_at": "2026-11-24T16:40:29+08:00",
+    "verified_at": "2026-11-24T16:42:23+08:00",
+    "decision": "df824256be9174cc76e3c2113b117da533daa3ba",
+    "evidence": "282664a4f0d3927cfdd9e77846168b8db0e15396"
+  },
+  "nia": {
+    "branch": "team-study/nia-routes",
+    "draft_commit": "db40acf3c9f7d68a303232b8794c68e09916241f",
+    "frozen_at": "2026-11-24T16:27:35+08:00",
+    "log": "2026-11-24_chatgpt_team-nia.md",
+    "link": "https://chatgpt.com/share/6b054d7c-e7ac-83ec-97e3-d3662b30021b",
+    "turns": [
+      {
+        "prompt": 8,
+        "response": 14,
+        "end": 14,
+        "asked_at": "2026-11-24T16:28:33+08:00"
+      },
+      {
+        "prompt": 18,
+        "response": 24,
+        "end": 32,
+        "asked_at": "2026-11-24T16:31:05+08:00"
+      },
+      {
+        "prompt": 36,
+        "response": 42,
+        "end": 46,
+        "asked_at": "2026-11-24T16:32:40+08:00"
+      },
+      {
+        "prompt": 50,
+        "response": 56,
+        "end": 60,
+        "asked_at": "2026-11-24T16:37:18+08:00"
+      },
+      {
+        "prompt": 64,
+        "response": 70,
+        "end": 74,
+        "asked_at": "2026-11-24T16:39:27+08:00"
+      }
+    ],
+    "shared_at": "2026-11-24T16:40:34+08:00",
+    "verified_at": "2026-11-24T16:42:27+08:00",
+    "decision": "15e55f210d022f965f82a5920b7ed280e75b3b85",
+    "evidence": "5fa02ff1b465f293c61f4b89648078ecf36f34e8"
+  },
+  "leo": {
+    "branch": "team-study/leo-scheduling",
+    "draft_commit": "2ed3290248b66e35cb8ef6b8049a1def9d7788f4",
+    "frozen_at": "2026-11-24T16:27:36+08:00",
+    "log": "2026-11-24_chatgpt_team-leo.md",
+    "link": "https://chatgpt.com/share/6b054d82-25b4-83ec-b7e6-0a75505e0177",
+    "turns": [
+      {
+        "prompt": 8,
+        "response": 14,
+        "end": 18,
+        "asked_at": "2026-11-24T16:28:34+08:00"
+      },
+      {
+        "prompt": 22,
+        "response": 28,
+        "end": 36,
+        "asked_at": "2026-11-24T16:31:06+08:00"
+      },
+      {
+        "prompt": 40,
+        "response": 46,
+        "end": 55,
+        "asked_at": "2026-11-24T16:32:41+08:00"
+      },
+      {
+        "prompt": 59,
+        "response": 65,
+        "end": 76,
+        "asked_at": "2026-11-24T16:37:19+08:00"
+      },
+      {
+        "prompt": 80,
+        "response": 86,
+        "end": 97,
+        "asked_at": "2026-11-24T16:39:28+08:00"
+      }
+    ],
+    "shared_at": "2026-11-24T16:40:39+08:00",
+    "verified_at": "2026-11-24T16:42:32+08:00",
+    "decision": "53cf4f882cf20443fef7f70bb73d6facf8afd48d",
+    "evidence": "5473a42cb6173291513485de45aca06e50d8c1c1"
+  }
+}
