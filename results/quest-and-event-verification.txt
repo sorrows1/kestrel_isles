@@ -1,4 +1,6 @@
 Quest and event scheduling
+Two zero-duration prerequisites before a five-hour quest
+unlock 2 5 0 1 2
 All-zero diamond and zero prefix
 unlock 3 0 0 1 3
 unlock 1 0 0 1
@@ -8,12 +10,19 @@ unlock 2 9 0 1 2
 unlock 2 cycle
 Equal source alternatives, program: unlock 3 0 0 2 3
 Independent checker accepted alternate: unlock 3 0 1 2 3
+Positive tie order control
+unlock 3 6 0 2 3
+unlock 3 6 0 2 3
+Positive tie verifier accepted the other source and three repeats per input matched
 Later larger candidate
 unlock 2 5 1 2
 unlock 3 9 1 2 3
 Quest dependencies inserted between queries
 unlock 2 6 0 2
 unlock 2 7 1 2
+Equal finish times and a touching event
+most 2 0 1
+best 14 1 2
 Rejected first-only mutation
 unlock 2 0 0 2
 unlock 3 4 0 2 3

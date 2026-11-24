@@ -1,4 +1,6 @@
 Quest and event scheduling
+Two zero-duration prerequisites before a five-hour quest
+unlock 2 5 2
 All-zero diamond and zero prefix
 unlock 3 0 3
 unlock 1 0 1
