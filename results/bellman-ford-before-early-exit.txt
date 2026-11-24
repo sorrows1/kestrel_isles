@@ -4,6 +4,8 @@ stamina 0 5 exploit 4 3 4
 stamina 0 5 exploit 1 2 1
 Parentless read-only probe from 1 to 0, labels [0, -2, -3]
 stamina 0 2 exploit 1 2 1
+First final update reaches a sink, labels [0, -6, -7, -5], edge (2, 3, 0)
+stamina 0 3 exploit 2 1 2
 Unreachable negative cycle stays invisible
 stamina 0 1 4 0 1
 stamina 0 3 unreachable
