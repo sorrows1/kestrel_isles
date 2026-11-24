@@ -29,6 +29,7 @@ SpanningForest prim(int n, const std::vector<Edge>& bridges) {
   using Entry = std::tuple<std::int64_t, int, int>;
   std::priority_queue<Entry, std::vector<Entry>, std::greater<>> heap;
   std::vector<char> used(n);
+  std::vector<std::int64_t> key(n, kUnreachable);
   SpanningForest forest;
 
   for (int root = 0; root < n; ++root) {
@@ -48,7 +49,9 @@ SpanningForest prim(int n, const std::vector<Edge>& bridges) {
 
       for (auto [v, i] : adj[u]) {
         auto w = bridges[i].weight;
-        if (!used[v]) {
+
+        if (!used[v] && w < key[v]) {
+          key[v] = w;
           heap.emplace(w, v, i);
         }
       }
