@@ -1,0 +1,6 @@
+# Highest individual reward blocks two touching events worth more together.
+N 1 0
+E 0 2 6
+E 2 3 4
+E 0 3 9
+best

@@ -1,15 +1,25 @@
 #include "quests.h"
+#include "packed_lists.h"
 
+#include <numeric>
 #include <queue>
 
 std::optional<QuestSchedule> quest_schedule(const std::vector<std::int64_t>& duration,
                                             const std::vector<Prerequisite>& prerequisites) {
   int n = static_cast<int>(duration.size());
-  std::vector<std::vector<int>> next(n);
+  PackedLists<int> next(n);
   std::vector<int> indegree(n);
   for (auto [u, v] : prerequisites) {
-    next[u].push_back(v);
+    ++next.offset[u + 1];
     ++indegree[v];
+  }
+
+  std::partial_sum(next.offset.begin(), next.offset.end(), next.offset.begin());
+  next.items.resize(prerequisites.size());
+  {
+    auto cursor = next.offset;
+    for (auto [u, v] : prerequisites)
+      next.items[cursor[u]++] = v;
   }
 
   std::queue<int> ready;
@@ -26,7 +36,8 @@ std::optional<QuestSchedule> quest_schedule(const std::vector<std::int64_t>& dur
 
     for (int v : next[u]) {
       auto finish = schedule.finish[u] + duration[v];
-      if (finish > schedule.finish[v]) {
+
+      if (schedule.critical[v] == -1 || finish > schedule.finish[v]) {
         schedule.finish[v] = finish;
         schedule.critical[v] = u;
       }

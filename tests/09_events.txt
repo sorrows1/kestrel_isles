@@ -1,0 +1,11 @@
+# Unsorted IDs, touching intervals and duplicate finish times exercise predecessor search and output sorting.
+N 1 0
+E 4 7 4
+E 0 2 3
+E 0 4 5
+E 2 4 3
+E 1 7 8
+most
+best
+E 0 7 15
+best
