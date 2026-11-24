@@ -1,0 +1,20 @@
+# Reverse edge order needs repeated passes; later additions change a finite route into an exploit.
+N 6 0
+R 4 5 -1
+R 3 4 2
+R 2 3 -1
+R 1 2 2
+R 0 1 1
+R 0 5 20
+stamina 0 5
+stamina 5 0
+R 5 2 -2
+stamina 0 5
+# A read-only witness scan can see the source decrease while its old parent
+# remains -1. The actual negative cycle is between 1 and 2.
+N 3 0
+R 0 2 -2
+R 1 0 1
+R 1 2 -2
+R 2 1 1
+stamina 0 0

@@ -37,29 +37,42 @@ BellmanFordResult bellman_ford(int n, const std::vector<Edge>& edges, int source
   ShortestPaths paths{std::vector<std::int64_t>(n, kUnreachable), std::vector<int>(n, -1)};
 
   paths.dist[source] = 0;
-  int last = -1;
 
-  for (int pass = 0; pass < n; ++pass) {
-    last = -1;
-    for (const auto& e : edges) {
-      if (paths.dist[e.from] == kUnreachable)
-        continue;
-      auto candidate = paths.dist[e.from] + e.weight;
-      if (candidate < paths.dist[e.to]) {
-        paths.dist[e.to] = candidate;
-        paths.parent[e.to] = e.from;
-        last = e.to;
-      }
+  const auto relax = [&](const Edge& edge) {
+    if (paths.dist[edge.from] == kUnreachable)
+      return false;
+    auto candidate = paths.dist[edge.from] + edge.weight;
+    if (candidate >= paths.dist[edge.to])
+      return false;
+    paths.dist[edge.to] = candidate;
+    paths.parent[edge.to] = edge.from;
+    return true;
+  };
+
+  for (int pass = 1; pass < n; ++pass) {
+    bool changed = false;
+    for (const auto& edge : edges) {
+      if (relax(edge))
+        changed = true;
     }
-    if (last == -1)
+    if (!changed)
       return {std::move(paths), {}};
   }
 
-  for (int i = 0; i < n; ++i)
-    last = paths.parent[last];
-  std::vector<int> cycle{last};
-  for (int u = paths.parent[last]; u != last; u = paths.parent[u])
-    cycle.push_back(u);
-  std::reverse(cycle.begin(), cycle.end());
-  return {{}, std::move(cycle)};
+  for (const auto& edge : edges) {
+
+    if (!relax(edge))
+      continue;
+    int on_cycle = edge.to;
+    for (int i = 0; i < n; ++i)
+      on_cycle = paths.parent[on_cycle];
+    std::vector<int> cycle{on_cycle};
+    for (int u = paths.parent[on_cycle]; u != on_cycle; u = paths.parent[u]) {
+      cycle.push_back(u);
+    }
+    std::reverse(cycle.begin(), cycle.end());
+    return {{}, std::move(cycle)};
+  }
+
+  return {std::move(paths), {}};
 }
