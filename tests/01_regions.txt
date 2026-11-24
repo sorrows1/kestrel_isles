@@ -1,0 +1,10 @@
+# Region labels follow minimum island ID, and sea routes never connect bridge components.
+N 7 0
+B 6 2 9
+B 5 1 8
+B 6 4 0
+R 1 2 0
+regions
+hops 4 2
+hops 1 2
+hops 3 3

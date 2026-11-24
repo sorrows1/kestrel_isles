@@ -4,7 +4,7 @@
 #include <queue>
 
 std::vector<int> region_labels(int n, const std::vector<Edge>& bridges) {
-  auto adj = adjacency(n, bridges, true);
+  auto adj = packed_adjacency(n, bridges, true);
   std::vector<int> labels(n, -1);
   std::queue<int> pending;
 
@@ -34,7 +34,7 @@ std::vector<int> region_labels(int n, const std::vector<Edge>& bridges) {
 int fewest_hops(int n, const std::vector<Edge>& bridges, int s, int t) {
   if (s == t)
     return 0;
-  auto adj = adjacency(n, bridges, true);
+  auto adj = packed_adjacency(n, bridges, true);
   std::vector<int> depth(n, -1);
   std::queue<int> pending;
   pending.push(s);
