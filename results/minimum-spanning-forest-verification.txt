@@ -11,9 +11,18 @@ maintain 0 3
 0 1 0
 1 2 0
 2 3 0
+All-isolated forest
+maintain 0 0
+maintain 0 0
 Rejected wrong weight
 Rejected nonexistent bridge
 Rejected reordered regions
 Rejected merged regions
 Rejected same-count cycle
 Accepted a distinct optimum witness 0-2, 1-2, 2-3
+Weighted optimum
+maintain 4 3
+0 1 1
+1 2 1
+2 3 2
+Rejected a feasible but nonoptimal forest of total 12

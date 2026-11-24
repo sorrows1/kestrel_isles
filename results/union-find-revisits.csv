@@ -1,0 +1,9 @@
+method,finds,root_links,compression_links,changed_parents,links_per_find
+rank,1,6,0,0,6
+both,1,6,6,5,12
+rank,2,12,0,0,6
+both,2,7,7,5,7
+rank,16,96,0,0,6
+both,16,21,21,5,2.625
+rank,64,384,0,0,6
+both,64,69,69,5,2.15625

@@ -282,7 +282,37 @@ void study_seed() {
       routes(family, n);
 }
 
+void report_revisited_leaf() {
+  Variant<true, false, true> initial(64);
+  for (int stride = 1; stride < 64; stride *= 2)
+    for (int v = 0; v < 64; v += 2 * stride)
+      initial.unite(v, v + stride);
+  auto query = [&](auto sets, const char* name, int repeats) {
+    sets.parent = initial.parent;
+    int changed = 0;
+    for (int i = 0; i < repeats; ++i) {
+      const auto previous = sets.parent;
+      require(sets.find(63) == 0);
+      for (int v = 0; v < 64; ++v)
+        changed += sets.parent[v] != previous[v];
+    }
+    const auto average = double(sets.links + sets.compression_links) / sets.calls;
+    std::cout << name << ',' << sets.calls << ',' << sets.links << ',' << sets.compression_links
+              << ',' << changed << ',' << average << '\n';
+  };
+
+  std::cout << "method,finds,root_links,compression_links,changed_parents,links_per_find\n";
+  for (int count : {1, 2, 16, 64}) {
+    query(Variant<true, false, true>(64), "rank", count);
+    query(Variant<true, true, true>(64), "both", count);
+  }
+}
+
 int main(int argc, char** argv) {
+  if (argc == 2 && std::string(argv[1]) == "--revisits") {
+    report_revisited_leaf();
+    return 0;
+  }
   control_only = argc == 2 && std::string(argv[1]) == "--control";
 
   rows.open(control_only ? "results/control.csv" : "results/timings.csv");
