@@ -1,0 +1,4 @@
+family,n,m,seed,method,ms,metric,root_links_per_find
+route-grid-forward,16384,65024,2183,fixed32,1.15785,0,0
+route-grid-reverse,16384,65024,2183,fixed32,1.2848,0,0
+route-grid-shuffle,16384,65024,2183,fixed32,1.56825,0,0

@@ -1,0 +1,2 @@
+One negative edge: Dijkstra and Bellman-Ford both gave 0,1,4,2.
+24,576 graph/source/order cases passed. The hand case gives 1 -> 2 -> 1 (weight -2).

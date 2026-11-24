@@ -1,0 +1,10 @@
+Shortest paths and negative cycles
+Reachable directed cycles under two input orders
+stamina 0 5 exploit 1 2 1
+stamina 0 5 exploit 4 3 4
+Parentless read-only probe from 1 to 0, labels [0, -2, -3]
+stamina 0 2 exploit 2 1 2
+Unreachable negative cycle stays invisible
+stamina 0 1 4 0 1
+stamina 0 3 unreachable
+Heap trace, target labels [2, 1, 0]; actual expansions [2, 0]
