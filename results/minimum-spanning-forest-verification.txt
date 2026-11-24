@@ -1,0 +1,19 @@
+Minimum spanning forests
+Actual forest witnesses
+regions 2
+0 1 2 3
+4
+maintain 0 3
+0 1 0
+0 2 0
+2 3 0
+maintain 0 3
+0 1 0
+1 2 0
+2 3 0
+Rejected wrong weight
+Rejected nonexistent bridge
+Rejected reordered regions
+Rejected merged regions
+Rejected same-count cycle
+Accepted a distinct optimum witness 0-2, 1-2, 2-3

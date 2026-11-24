@@ -1,0 +1,13 @@
+Minimum spanning forests
+Actual forest witnesses
+regions 2
+0 1 2 3
+4
+maintain 0 3
+0 1 0
+1 2 0
+2 3 0
+maintain 0 3
+0 1 0
+1 2 0
+2 3 0

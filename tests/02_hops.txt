@@ -1,0 +1,8 @@
+# Minimum hops can take an expensive direct bridge; minimum length can require three hops.
+N 4 0
+B 0 3 100
+B 1 0 1
+B 2 1 1
+B 3 2 1
+hops 3 0
+fastest 3 0

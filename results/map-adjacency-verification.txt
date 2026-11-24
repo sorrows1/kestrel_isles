@@ -1,0 +1,25 @@
+Map adjacency and queries
+Empty bridge graph and source-to-self
+regions 4
+0
+1
+2
+3
+hops 1 1 0
+hops 1 2 unreachable
+Bridge insertions
+regions 4
+0 1
+2
+3 4
+5
+hops 0 4 unreachable
+regions 3
+0 1 3 4
+2
+5
+hops 0 4 3
+regions 2
+0 1 3 4 5
+2
+hops 0 5 4

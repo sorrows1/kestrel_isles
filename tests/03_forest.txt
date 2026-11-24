@@ -1,0 +1,10 @@
+# Equal lengths, a zero edge, reversed bridge endpoints, isolated islands and a second tree.
+N 8 0
+B 3 2 0
+B 3 1 2
+B 2 1 2
+B 0 1 9
+B 6 4 1000000000
+maintain prim
+maintain kruskal
+regions

@@ -1,23 +1,35 @@
-// Your disjoint-set forest. Every member function below is a stub that
-// compiles but does nothing useful yet; replace each one with your
-// implementation.
-
 #include "disjoint_set.h"
 
-DisjointSet::DisjointSet(int /*n*/) {
-  // TODO: Make every element the root of its own tree, with rank 0.
+#include <algorithm>
+#include <numeric>
 
-  // This line only silences a compiler warning about an unused member.
-  // Delete it once your code uses rank_.
-  (void)rank_;
+DisjointSet::DisjointSet(int n) : parent_(n), rank_(n), count_(n) {
+  std::iota(parent_.begin(), parent_.end(), 0);
 }
 
 int DisjointSet::find(int x) {
-  return x;  // TODO
+  int root = x;
+  while (parent_[root] != root)
+    root = parent_[root];
+  while (x != root) {
+    int next = parent_[x];
+    parent_[x] = root;
+    x = next;
+  }
+  return root;
 }
 
-bool DisjointSet::unite(int /*x*/, int /*y*/) {
-  return false;  // TODO
+bool DisjointSet::unite(int x, int y) {
+  int a = find(x), b = find(y);
+  if (a == b)
+    return false;
+  if (rank_[a] < rank_[b])
+    std::swap(a, b);
+  parent_[b] = a;
+  if (rank_[a] == rank_[b])
+    ++rank_[a];
+  --count_;
+  return true;
 }
 
 int DisjointSet::count() const {
