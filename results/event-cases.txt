@@ -1,0 +1,8 @@
+Largest reward: greedy 9, optimum 10
+Earliest finish: greedy 1, optimum 2
+Density: greedy 3, optimum 5
+Proportional, longer first: greedy 20, optimum 20
+Proportional, shorter first: greedy 10, optimum 20
+Additive bonus, fixed order: greedy 15, optimum 20
+Compatible, longer first: greedy 30, optimum 30
+Compatible, shorter first: greedy 30, optimum 30
