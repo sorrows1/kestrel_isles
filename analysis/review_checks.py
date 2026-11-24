@@ -26,6 +26,15 @@ def validate(commands, output):
         check_output(file, output)
 
 
+def reject_commands(binary, commands):
+    with TemporaryDirectory() as directory:
+        path = Path(directory) / "case.txt"
+        path.write_text(commands, encoding="ascii")
+        proc = subprocess.run([str(binary), str(path)], capture_output=True, text=True)
+        assert proc.returncode != 0 and proc.stderr.startswith("Cannot parse line: ")
+        return proc.stderr.strip()
+
+
 MAP = """N 6 0
 B 0 1 3
 B 3 4 8
@@ -95,6 +104,31 @@ unlock 3
 
 
 def map_checks(binary, before=False):
+    print("Weights, sea routes, and world reset")
+    print(
+        run(
+            binary,
+            """
+N 6 0
+B 0 1 9
+B 0 2 1
+B 2 1 1
+R 1 4 0
+regions
+hops 0 1
+fastest 0 1
+hops 1 4
+hops 5 5
+N 4 0
+B 2 3 7
+regions
+hops 0 1
+""",
+        )
+    )
+    print("Invalid inputs rejected by the driver")
+    print(reject_commands(binary, "N 2 0\nB 0 1 3\nB 1 0 4\n"))
+    print(reject_commands(binary, "N 2 0\nB 1 1 0\n"))
     print("Empty bridge graph and source-to-self")
     print(run(binary, "N 4 0\nregions\nhops 1 1\nhops 1 2\n"))
     print("Bridge insertions")
@@ -105,6 +139,8 @@ def forest_checks(binary, before=False):
     clean = run(binary, FOREST)
     print("Actual forest witnesses")
     print(clean)
+    print("All-isolated forest")
+    print(run(binary, "N 4 0\nmaintain prim\nmaintain kruskal\n"))
     if before:
         return
     rows = clean.splitlines()
@@ -127,26 +163,68 @@ def forest_checks(binary, before=False):
     alternate = [*rows[:4], "0 2 0", "1 2 0", "2 3 0", *rows[7:]]
     validate(FOREST, "\n".join(alternate))
     print("Accepted a distinct optimum witness 0-2, 1-2, 2-3")
+    weighted = "N 5 0\nB 0 1 1\nB 1 2 1\nB 0 2 9\nB 2 3 2\nmaintain prim\n"
+    print("Weighted optimum")
+    print(run(binary, weighted))
+    try:
+        validate(weighted, "maintain 12 3\n0 1 1\n0 2 9\n2 3 2\n")
+    except AssertionError:
+        print("Rejected a feasible but nonoptimal forest of total 12")
+    else:
+        raise AssertionError("The objective check accepted a nonoptimal forest")
+
+
+def first_final_update(n, edges):
+    dist, parent = [0] + [float("inf")] * (n - 1), [-1] * n
+    for _ in range(n - 1):
+        for u, v, cost in edges:
+            if dist[u] + cost < dist[v]:
+                dist[v], parent[v] = dist[u] + cost, u
+    first = next(e for e in edges if dist[e[0]] + e[2] < dist[e[1]])
+    return dist, parent, first
 
 
 def route_checks(binary, before=False):
     print("Reachable directed cycles under two input orders")
     print(run(binary, TWO_CYCLES))
     edges = [(0, 2, -1), (1, 0, 1), (1, 2, -3), (2, 1, 1)]
-    dist, parent = [0, float("inf"), float("inf")], [-1] * 3
-    for _ in range(2):
-        for u, v, cost in edges:
-            if dist[u] + cost < dist[v]:
-                dist[v], parent[v] = dist[u] + cost, u
+    dist, parent, (u, v, _) = first_final_update(3, edges)
     assert dist == [0, -2, -3]
-    u, v, cost = next(e for e in edges if dist[e[0]] + e[2] < dist[e[1]])
     assert (u, v) == (1, 0) and parent[v] == -1
     print(f"Parentless read-only probe from 1 to 0, labels {dist}")
     print(
         run(binary, "N 3 0\n" + "".join(f"R {u} {v} {w}\n" for u, v, w in edges) + "stamina 0 2\n")
     )
+    tail = [(2, 3, 0), (0, 1, 0), (1, 2, -3), (2, 1, 1)]
+    dist, parent, first = first_final_update(4, tail)
+    assert dist == [0, -6, -7, -5] and first == (2, 3, 0) and parent[3] == 2
+    print(f"First final update reaches a sink, labels {dist}, edge {first}")
+    print(
+        run(binary, "N 4 0\n" + "".join(f"R {u} {v} {w}\n" for u, v, w in tail) + "stamina 0 3\n")
+    )
+    longer = [(3, 4, 0), *tail]
+    dist, parent, first = first_final_update(5, longer)
+    assert dist == [0, -8, -9, -7, -5] and first == (3, 4, 0)
+    assert (parent[4], parent[3]) == (3, 2)
+    print(f"First final update before a two-edge predecessor tail, labels {dist}, edge {first}")
+    print(
+        run(binary, "N 5 0\n" + "".join(f"R {u} {v} {w}\n" for u, v, w in longer) + "stamina 0 4\n")
+    )
     print("Unreachable negative cycle stays invisible")
     print(run(binary, "N 4 0\nR 0 1 4\nR 2 3 -2\nR 3 2 1\nstamina 0 1\nstamina 0 3\n"))
+    print("Reachable directed cycle of zero total")
+    print(run(binary, "N 2 0\nR 0 1 -1\nR 1 0 1\nstamina 0 1\n"))
+    print("64-bit path and an unreachable tail with a negative outgoing route")
+    print(
+        run(
+            binary,
+            "N 6 0\nR 0 1 1000000000\nR 1 2 1000000000\nR 2 3 1000000000\n"
+            "R 4 5 -1\nstamina 0 3\nstamina 0 5\n",
+        )
+    )
+    print("Contract excludes self routes and repeated directed arcs")
+    print(reject_commands(binary, "N 2 0\nR 0 0 -1\n"))
+    print(reject_commands(binary, "N 2 0\nR 0 1 3\nR 0 1 -1\n"))
     if not before:
         rows = [[(1, 5), (3, 2)], [(2, -5)], [(3, 1), (4, 0)], [], [(3, 0)]]
         dist = [0] + [float("inf")] * 4
@@ -168,6 +246,8 @@ def route_checks(binary, before=False):
 
 
 def schedule_checks(binary, before=False, mutant=None):
+    print("Two zero-duration prerequisites before a five-hour quest")
+    print(run(binary, "N 1 3\nQ 2 5\nP 0 1\nP 1 2\nunlock 2\n", verify=not before))
     print("All-zero diamond and zero prefix")
     print(run(binary, ZERO_QUESTS, verify=not before))
     print("Disconnected cycle and positive chain")
@@ -182,10 +262,22 @@ def schedule_checks(binary, before=False, mutant=None):
     alternate = f"unlock 3 0 {other} 2 3"
     validate(TIE, alternate)
     print(f"Independent checker accepted alternate: {alternate}")
+    equal = "N 1 4\nQ 0 4\nQ 1 4\nQ 3 2\nP 0 2\nP 1 2\nP 2 3\nunlock 3\n"
+    reordered = equal.replace("P 0 2\nP 1 2", "P 1 2\nP 0 2")
+    print("Positive tie order control")
+    for commands in (equal, reordered):
+        answer = run(binary, commands)
+        assert all(run(binary, commands) == answer for _ in range(2))
+        print(answer)
+        other = 1 - int(answer.split()[3])
+        validate(commands, f"unlock 3 6 {other} 2 3")
+    print("Positive tie verifier accepted the other source and three repeats per input matched")
     print("Later larger candidate")
     print(run(binary, LATER))
     print("Quest dependencies inserted between queries")
     print(run(binary, "N 1 3\nQ 0 2\nQ 1 3\nQ 2 4\nP 0 2\nunlock 2\nP 1 2\nunlock 2\n"))
+    print("Equal finish times and a touching event")
+    print(run(binary, "N 1 0\nE 0 2 5\nE 2 4 6\nE 1 2 8\nmost\nbest\n"))
     if mutant:
         output = run(mutant, LATER, verify=False)
         try:

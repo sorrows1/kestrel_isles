@@ -11,4 +11,4 @@ The first ancestor of the new work is the course starter dcf4e78ff3dd17c87799a4b
 | Nia | team-study/nia-routes | Shortest paths, negative-cycle witnesses and edge order experiments |
 | Leo | team-study/leo-scheduling | Quest scheduling, event selection and final integration |
 
-AI trailers identify the browser consultations informing the decision in each commit. Each consultation starts from the role's own draft. The spreadsheet-free results are direct measurements or command output from this exercise.
+AI trailers identify the consultations associated with each role's work. The current logs are a second review of the saved drafts. Their timestamps follow the earlier implementation commits. Each role opened a separate ChatGPT conversation with its own assignment context and returned with local verification and measurements. The recorded outputs and later review commits are linked in the evidence index.
